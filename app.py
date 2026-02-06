@@ -16,15 +16,4 @@ classifier = obj["model"]
 threshold = obj["seuil"]
 scaler = obj["scaler"]
 
-st.success("Model loaded successfully")
-
-st.write("### Model")
-st.write(classifier)
-
-st.write("### Decision threshold")
-st.write(threshold)
-
-st.write("### Scaler")
-st.write(scaler)
-
-st.caption(f"Model path: {MODEL_PATH}")
+st.write(f"Model path: {MODEL_PATH}")
