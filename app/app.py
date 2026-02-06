@@ -1,12 +1,18 @@
 import streamlit as st
 import joblib
 from sklearn.linear_model import LogisticRegression
+from pathlib import Path
 
-MODEL_PATH = 'model/classifier_employee.pkl'
-model = joblib.load(MODEL_PATH)['model']
-threshold = joblib.load(MODEL_PATH)['seuil']
+MODEL_PATH = Path(__file__).resolve().parent.parent / "model" / "classifier_employee.pkl"
+
+obj = joblib.load(MODEL_PATH)
+classifier = obj["model"]
+threshold = obj["seuil"]
+scaler = obj["scaler"]
 
 
 if __name__ == '__main__':
-    print(model)
+    print(MODEL_PATH)
+    print(classifier)
     print(threshold)
+    print(scaler)
