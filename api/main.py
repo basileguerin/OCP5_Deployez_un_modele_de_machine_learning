@@ -33,6 +33,17 @@ app = FastAPI(
     contact={"name": "Basile GUERIN", "email": "basile.guerin1@gmail.com"},
 )
 
+class MetadataResponse(BaseModel):
+    features_order: list[str] = Field(
+        ..., description="Ordered list of features expected by the model."
+    )
+    cols_to_scale: list[str] = Field(
+        ..., description="Subset of numerical features that require standardization."
+    )
+    threshold: float = Field(
+        ..., ge=0.0, le=1.0, description="Decision threshold used by the model."
+    )
+
 class PredictRequest(BaseModel):
     features: Dict[str, float] = Field(
         ...,
@@ -105,7 +116,19 @@ class PredictResponse(BaseModel):
     prediction: int = Field(..., description="Binary decision using the configured threshold (0/1).")
     threshold: float = Field(..., ge=0.0, le=1.0, description="Decision threshold used for prediction.")
 
-@app.get("/metadata")
+@app.get(
+    "/metadata",
+    response_model=MetadataResponse,
+    summary="Get model metadata",
+    description=(
+        "Returns configuration information required by client applications.\n\n"
+        "This endpoint provides:\n"
+        "- the exact feature order expected by the model\n"
+        "- the subset of features that are standardized\n"
+        "- the decision threshold\n\n"
+        "Useful for front-end validation and ensuring consistency with the deployed model."
+    ),
+)
 def metadata():
     return {
         "features_order": [str(x) for x in FEATURES_ORDER],
