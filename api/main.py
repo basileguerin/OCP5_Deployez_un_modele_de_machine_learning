@@ -43,11 +43,57 @@ class PredictRequest(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "features": {
-                        "age": 35,
-                        "genre": 1,
-                        "revenu_mensuel": 4000
-                    }
+                "features": {
+                    "age": 30,
+                    "genre": 0,
+                    "revenu_mensuel": 3000,
+                    "nombre_experiences_precedentes": 2,
+                    "annee_experience_totale": 5,
+                    "annees_dans_l_entreprise": 3,
+                    "annees_dans_le_poste_actuel": 2,
+                    "niveau_education": 3,
+                    "niveau_hierarchique_poste": 2,
+                    "frequence_deplacement": 0,
+                    "heure_supplementaires": 0,
+                    "distance_domicile_travail": 10,
+                    "nb_formations_suivies": 0,
+                    "nombre_participation_pee": 0,
+                    "annees_depuis_la_derniere_promotion": 2,
+                    "annes_sous_responsable_actuel": 2,
+                    "augmentation_salaire_precedente_bin": 0,
+
+                    "note_evaluation_precedente": 3,
+                    "note_evaluation_actuelle": 3,
+                    "satisfaction_employee_environnement": 3,
+                    "satisfaction_employee_nature_travail": 3,
+                    "satisfaction_employee_equipe": 3,
+                    "satisfaction_employee_equilibre_pro_perso": 3,
+
+                    "poste_Assistant de Direction": 1,
+                    "poste_Manager": 0,
+                    "poste_Consultant": 0,
+                    "poste_Cadre Commercial": 0,
+                    "poste_Directeur Technique": 0,
+                    "poste_Représentant Commercial": 0,
+                    "poste_Ressources Humaines": 0,
+                    "poste_Senior Manager": 0,
+                    "poste_Tech Lead": 0,
+
+                    "departement_Commercial": 1,
+                    "departement_Consulting": 0,
+                    "departement_Ressources Humaines": 0,
+
+                    "domaine_etude_Autre": 1,
+                    "domaine_etude_Entrepreunariat": 0,
+                    "domaine_etude_Infra & Cloud": 0,
+                    "domaine_etude_Marketing": 0,
+                    "domaine_etude_Ressources Humaines": 0,
+                    "domaine_etude_Transformation Digitale": 0,
+
+                    "statut_marital_Célibataire": 1,
+                    "statut_marital_Marié(e)": 0,
+                    "statut_marital_Divorcé(e)": 0
+                }
                 }
             ]
         }
