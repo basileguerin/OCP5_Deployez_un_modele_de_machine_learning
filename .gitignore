@@ -2,3 +2,7 @@
 /data
 tests.ipynb
 notes.txt
+/api/test_api.ipynb
+/db/test_db.ipynb
+
+__pycache__
