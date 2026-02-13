@@ -1,3 +1,6 @@
 streamlit
 joblib
 scikit-learn
+psycopg2-binary
+SQLAlchemy
+fastapi
