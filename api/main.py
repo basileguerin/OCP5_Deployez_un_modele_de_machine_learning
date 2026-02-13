@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from pathlib import Path
+from pathlib import Path, Field
 import pandas as pd
 import joblib
 import numpy as np
@@ -24,12 +24,40 @@ FEATURES_ORDER = list(model.feature_names_in_)
 
 app = FastAPI(
     title="HRPredict API",
-    description="API de prédiction du risque de démission",
-    version="1.0",
+    version="1.1",
+    description=(
+        "API for employee attrition prediction.\n\n"
+        "Tech stack: FastAPI + Pydantic + PostgreSQL.\n"
+        "All predictions are logged in the database for traceability."
+    ),
+    contact={"name": "Basile GUERIN", "email": "basile.guerin1@gmail.com"},
 )
 
 class PredictRequest(BaseModel):
-    features: Dict[str, float]
+    features: Dict[str, float] = Field(
+        ...,
+        description="Mapping feature_name -> value. Must include all expected features."
+    )
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "features": {
+                        "age": 35,
+                        "genre": 1,
+                        "revenu_mensuel": 4000
+                    }
+                }
+            ]
+        }
+    }
+
+class PredictResponse(BaseModel):
+    request_id: str = Field(..., description="Unique id of the prediction request stored in DB.")
+    probability: float = Field(..., ge=0.0, le=1.0, description="Predicted probability of attrition.")
+    prediction: int = Field(..., description="Binary decision using the configured threshold (0/1).")
+    threshold: float = Field(..., ge=0.0, le=1.0, description="Decision threshold used for prediction.")
 
 @app.get("/metadata")
 def metadata():
@@ -39,7 +67,18 @@ def metadata():
         "threshold": float(threshold),
     }
 
-@app.post("/predict")
+@app.post(
+    "/predict",
+    response_model=PredictResponse,
+    summary="Predict attrition risk",
+    description=(
+        "Computes the probability that an employee will resign.\n\n"
+        "This endpoint logs:\n"
+        "- the input features to `prediction_requests`\n"
+        "- the output to `prediction_results`\n"
+        "to ensure full traceability."
+    ),
+)
 def predict(data: PredictRequest):
 
     db = SessionLocal()
