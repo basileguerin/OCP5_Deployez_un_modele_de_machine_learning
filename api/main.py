@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from pathlib import Path, Field
+from pydantic import BaseModel, Field
+from pathlib import Path
 import pandas as pd
 import joblib
 import numpy as np
