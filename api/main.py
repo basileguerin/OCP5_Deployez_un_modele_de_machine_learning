@@ -31,6 +31,14 @@ app = FastAPI(
 class PredictRequest(BaseModel):
     features: Dict[str, float]
 
+@app.get("/metadata")
+def metadata():
+    return {
+        "features_order": [str(x) for x in FEATURES_ORDER],
+        "cols_to_scale": [str(x) for x in cols_to_scale],
+        "threshold": float(threshold),
+    }
+
 @app.post("/predict")
 def predict(data: PredictRequest):
 
