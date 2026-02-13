@@ -1,8 +1,49 @@
-.venv
-/data
-tests.ipynb
-notes.txt
-/api/test_api.ipynb
-/db/test_db.ipynb
+# Environnement Python
+.venv/
+venv/
+env/
 
-__pycache__
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Notebooks de test / exploration
+tests.ipynb
+api/test_api.ipynb
+db/test_db.ipynb
+
+# Données locales
+data/
+*.csv
+*.xlsx
+
+# Fichiers locaux / notes
+notes.txt
+*.log
+
+# Secrets / config locale
+.env
+.env.*
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build / cache outils
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Streamlit
+.streamlit/
