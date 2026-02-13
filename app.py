@@ -162,7 +162,19 @@ if submitted:
     features.update(one_hot(departement, DEPARTEMENTS, "departement_"))
     features.update(one_hot(domaine, DOMAINES, "domaine_etude_"))
     features.update(one_hot(statut, STATUTS, "statut_marital_"))
+    
+    meta = requests.get(f"{API_BASE}/metadata").json()
+    expected = set(meta["features_order"])
+    sent = set(features.keys())
 
+    missing = expected - sent
+    extra = sent - expected
+
+    if missing or extra:
+        st.error("Payload invalide vs modèle")
+        st.write("Missing:", list(missing)[:10])
+        st.write("Extra:", list(extra)[:10])
+        st.stop()
     # Call API
     try:
         r = requests.post(PREDICT_URL, json={"features": features}, timeout=20)
