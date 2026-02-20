@@ -8,7 +8,7 @@ from typing import Dict
 from api.db import SessionLocal
 from sqlalchemy import text
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -169,7 +169,7 @@ def predict(data: PredictRequest):
             {
                 "request_id": request_id,
                 "features": json.dumps(data.features),   # IMPORTANT
-                "requested_at": datetime.utcnow(),
+                "requested_at": datetime.now(timezone.utc)
             }
         )
 
@@ -178,10 +178,9 @@ def predict(data: PredictRequest):
 
         X_df = pd.DataFrame(X, columns=FEATURES_ORDER)
         X_df[cols_to_scale] = scaler.transform(X_df[cols_to_scale])
-        X_scaled = X_df.values
 
         # Prédiction
-        proba = float(model.predict_proba(X_scaled)[0, 1])
+        proba = float(model.predict_proba(X_df)[0, 1])
         pred = int(proba >= threshold)
 
         # Enregistrer résultat
@@ -195,7 +194,7 @@ def predict(data: PredictRequest):
                 "probability": proba,
                 "prediction": pred,
                 "threshold": threshold,
-                "predicted_at": datetime.utcnow(),
+                "predicted_at": datetime.now(timezone.utc),
             }
         )
 
