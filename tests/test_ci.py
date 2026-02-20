@@ -1,5 +1,5 @@
-import math
 import random
+import json
 
 import numpy as np
 import pytest
@@ -87,17 +87,29 @@ def test_predict_rejects_wrong_key_case(client):
     assert r.status_code == 422
 
 
-def test_predict_rejects_nan_or_inf(client):
-    # Très important pour robustesse modèle
-    features = make_valid_features(0.0)
-    features[main.FEATURES_ORDER[0]] = float("nan")
-    r = client.post("/predict", json={"features": features})
-    assert r.status_code in (422, 500)
+def test_predict_rejects_nan_or_inf_raw_json(client):
+    # On envoie volontairement un JSON non standard (NaN/Infinity)
+    payload_nan = {"features": make_valid_features(0.0)}
+    first = main.FEATURES_ORDER[0]
 
-    features = make_valid_features(0.0)
-    features[main.FEATURES_ORDER[0]] = float("inf")
-    r = client.post("/predict", json={"features": features})
-    assert r.status_code in (422, 500)
+    # NaN
+    payload_nan["features"][first] = float("nan")
+    r = client.post(
+        "/predict",
+        content=json.dumps(payload_nan, allow_nan=True),
+        headers={"Content-Type": "application/json"},
+    )
+    assert r.status_code in (400, 422)
+
+    # Infinity
+    payload_inf = {"features": make_valid_features(0.0)}
+    payload_inf["features"][first] = float("inf")
+    r = client.post(
+        "/predict",
+        content=json.dumps(payload_inf, allow_nan=True),
+        headers={"Content-Type": "application/json"},
+    )
+    assert r.status_code in (400, 422)
 
 
 # FUNCTIONAL TESTS (end-to-end modèle via l'API)
