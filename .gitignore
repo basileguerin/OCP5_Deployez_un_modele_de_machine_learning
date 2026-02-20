@@ -1,7 +1,8 @@
-# Environnement Python
+# Environnements Python
 .venv/
 venv/
 env/
+ENV/
 
 # Python cache
 __pycache__/
@@ -12,21 +13,22 @@ __pycache__/
 # Jupyter
 .ipynb_checkpoints/
 
-# Notebooks de test / exploration
+# Notebooks d'exploration uniquement
 tests.ipynb
 api/test_api.ipynb
 db/test_db.ipynb
 
-# Données locales
-data/
-*.csv
-*.xlsx
+# Bases locales
+*.db
+*.sqlite
+*.sqlite3
+*.sqlitedb
 
-# Fichiers locaux / notes
+# Logs / fichiers locaux
 notes.txt
 *.log
 
-# Secrets / config locale
+# Secrets / variables d'env
 .env
 .env.*
 *.env
@@ -39,11 +41,18 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Build / cache outils
+# Tests / coverage
 .pytest_cache/
 .mypy_cache/
 .coverage
 htmlcov/
 
-# Streamlit
+# Streamlit local config
 .streamlit/
+
+# Docker
+# fichiers générés localement
+*.tar
+
+# PostgreSQL
+pgdata/
