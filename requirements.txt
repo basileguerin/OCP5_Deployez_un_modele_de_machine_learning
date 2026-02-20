@@ -1,7 +1,10 @@
-streamlit
-joblib
-scikit-learn
-psycopg2-binary
-SQLAlchemy
 fastapi
-httpx
+uvicorn
+streamlit
+pandas
+numpy
+scikit-learn
+joblib
+sqlalchemy
+psycopg2-binary
+requests

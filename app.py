@@ -1,12 +1,13 @@
 import streamlit as st
 import requests
+import os
 
 # Config
 st.set_page_config(page_title="HRPredict", layout="wide")
 st.title("HRPredict")
 st.caption("Enter employee information to predict resignation risk.")
 
-API_BASE = "http://127.0.0.1:8000"
+API_BASE = os.getenv("API_URL", "http://127.0.0.1:8000")
 PREDICT_URL = f"{API_BASE}/predict"
 
 # Helpers
@@ -175,6 +176,7 @@ if submitted:
         st.write("Missing:", list(missing)[:10])
         st.write("Extra:", list(extra)[:10])
         st.stop()
+
     # Call API
     try:
         r = requests.post(PREDICT_URL, json={"features": features}, timeout=20)

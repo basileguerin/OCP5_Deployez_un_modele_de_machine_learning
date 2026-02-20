@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: hruser
+      POSTGRES_PASSWORD: hrpassword
+      POSTGRES_DB: hrpredict
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hruser -d hrpredict"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg2://hruser:hrpassword@db:5432/hrpredict
+      IN_DOCKER: "1"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      bash -lc "
+      python -c 'from db.create_db import main; main()' &&
+      uvicorn api.main:app --host 0.0.0.0 --port 8000
+      "
+    ports:
+      - "8000:8000"
+
+  app:
+    build: .
+    environment:
+      API_URL: http://api:8000
+      IN_DOCKER: "1"
+    depends_on:
+      - api
+    command: >
+      bash -lc "
+      streamlit run app.py --server.port 7860 --server.address 0.0.0.0
+      "
+    ports:
+      - "7860:7860"
+
+volumes:
+  pgdata:
