@@ -114,7 +114,22 @@ def test_predict_rejects_nan_or_inf_raw_json(client):
         headers={"Content-Type": "application/json"},
     )
     assert r.status_code in (400, 422)
+    
+def test_predict_rejects_non_castable_value(client):
+    """
+    Couvre la branche:
+        except (TypeError, ValueError)
+    """
+    features = make_valid_features(0.0)
+    features[main.FEATURES_ORDER[0]] = "not_a_number"
 
+    r = client.post(
+        "/predict",
+        content=json.dumps({"features": features}),
+        headers={"Content-Type": "application/json"},
+    )
+
+    assert r.status_code == 422
 
 # FUNCTIONAL TESTS (end-to-end modèle via l'API)
 
