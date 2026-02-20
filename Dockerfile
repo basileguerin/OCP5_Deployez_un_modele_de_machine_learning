@@ -3,6 +3,7 @@ FROM python:3.12-slim
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
@@ -11,6 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN chmod -R a+rX /app
+RUN chmod +x /app/start.sh
 
-EXPOSE 8000 7860
+EXPOSE 7860
+
+CMD ["/app/start.sh"]

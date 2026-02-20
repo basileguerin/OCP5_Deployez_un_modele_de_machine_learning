@@ -9,8 +9,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SCHEMA_PATH = ROOT / "db" / "schema.sql"
 CSV_PATH = ROOT / "data" / "dataset_clean.csv"
 
-DEFAULT_LOCAL_PG = "postgresql+psycopg2://hruser:hrpassword@localhost:5432/hrpredict"
-DB_URL = os.getenv("DATABASE_URL", DEFAULT_LOCAL_PG)
+DB_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://hruser:hrpassword@localhost:5432/hrpredict")
 
 engine = create_engine(DB_URL)
 
