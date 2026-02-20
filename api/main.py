@@ -10,6 +10,7 @@ from sqlalchemy import text
 import uuid
 from datetime import datetime, timezone
 import json
+import math
 
 ROOT = Path(__file__).resolve().parent.parent
 MODEL_PATH = ROOT / "model" / "classifier_employee.pkl"
@@ -156,6 +157,27 @@ def predict(data: PredictRequest):
         missing = [f for f in FEATURES_ORDER if f not in data.features]
         if missing:
             raise HTTPException(status_code=422, detail=f"Missing features: {missing}")
+
+        # Validation valeurs: pas de None / NaN / Inf / non-castable
+        invalid = []
+        for f in FEATURES_ORDER:
+            v = data.features.get(f)
+
+            if v is None:
+                invalid.append(f)
+                continue
+
+            try:
+                fv = float(v)
+            except (TypeError, ValueError):
+                invalid.append(f)
+                continue
+
+            if not math.isfinite(fv):
+                invalid.append(f)
+
+        if invalid:
+            raise HTTPException(status_code=422, detail=f"Invalid values for features: {invalid}")
 
         request_id = str(uuid.uuid4())
         now = datetime.now(timezone.utc)

@@ -27,4 +27,4 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest -q --cov=api --cov-report=term-missing --cov-report=xml
+          pytest -q --cov=api --cov-report=term-missing --cov-report=html
