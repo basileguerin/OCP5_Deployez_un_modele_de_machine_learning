@@ -178,7 +178,7 @@ Le seuil de décision est optimisé pour équilibrer faux positifs et faux néga
 
 ## Base de Données
 
-
+```mermaid
 erDiagram
     EMPLOYEES {
         UUID employee_id PK
@@ -205,6 +205,7 @@ erDiagram
     %% - Une request peut avoir 0 ou 1 result (0..1) (ex: si crash avant insert result)
     %% - Un result appartient à exactement 1 request
     PREDICTION_REQUESTS ||--o| PREDICTION_RESULTS : "produces"
+```
 
 ## Tests et qualité
 
