@@ -172,7 +172,7 @@ Performances (jeu de test) :
 * Précision : ~0.80
 * Rappel : ~0.70
 
-Le seuil de décision est optimisé pour équilibrer faux positifs et faux négatifs.
+Le seuil de décision est optimisé pour minimiser faux positifs et faux négatifs.
 
 ---
 
