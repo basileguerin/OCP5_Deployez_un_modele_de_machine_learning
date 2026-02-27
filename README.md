@@ -92,7 +92,7 @@ Les prédictions et les données d’entrée sont persistées dans Neon afin d�
 ### 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/basileguerin/OCP5_Deployez_un_modele_de_machine_learning.git
+git clone https://github.com/basileguerin/hrpredict.git
 cd hrpredict
 ```
 
