@@ -176,6 +176,36 @@ Le seuil de décision est optimisé pour équilibrer faux positifs et faux néga
 
 ---
 
+## Base de Données
+
+
+erDiagram
+    EMPLOYEES {
+        UUID employee_id PK
+        JSONB features
+        TIMESTAMPTZ created_at
+    }
+
+    PREDICTION_REQUESTS {
+        UUID request_id PK
+        JSONB input_features
+        TIMESTAMPTZ requested_at
+    }
+
+    PREDICTION_RESULTS {
+        UUID result_id PK
+        UUID request_id FK "UNIQUE NOT NULL"
+        DOUBLE probability
+        INT prediction
+        DOUBLE threshold
+        TIMESTAMPTZ predicted_at
+    }
+
+    %% Cardinalités:
+    %% - Une request peut avoir 0 ou 1 result (0..1) (ex: si crash avant insert result)
+    %% - Un result appartient à exactement 1 request
+    PREDICTION_REQUESTS ||--o| PREDICTION_RESULTS : "produces"
+
 ## Tests et qualité
 
 Suite de tests avec pytest :
